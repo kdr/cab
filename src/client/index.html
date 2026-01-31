@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>░▒▓ CAB ▓▒░ ALL YOUR GAME ARE BELONG TO US</title>
+  <meta name="description" content="A virtual retro arcade cabinet. Insert coin to play.">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="░▒▓ CAB ▓▒░">
+  <meta property="og:description" content="ALL YOUR GAME ARE BELONG TO US. A virtual retro arcade cabinet with CRT effects.">
+  <meta property="og:site_name" content="CAB">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="░▒▓ CAB ▓▒░">
+  <meta name="twitter:description" content="ALL YOUR GAME ARE BELONG TO US. A virtual retro arcade cabinet.">
+
+  <!-- Theme -->
+  <meta name="theme-color" content="#1a1a2e">
+
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/tv-monitor.css">
+</head>
+<body>
+  <div class="cabinet">
+    <div class="tv-frame">
+      <div class="tv-bezel">
+        <div class="tv-screen">
+          <div class="crt-overlay"></div>
+          <div class="scanlines"></div>
+          <div class="vignette"></div>
+
+          <!-- Off screen -->
+          <div id="screen-off" class="screen-content active">
+            <div class="static-noise"></div>
+          </div>
+
+          <!-- Boot screen -->
+          <div id="screen-boot" class="screen-content">
+            <div class="boot-content">
+              <pre id="ascii-art"></pre>
+              <p class="boot-message">LOADING SYSTEM...</p>
+              <p class="press-start hidden">PRESS ENTER</p>
+            </div>
+          </div>
+
+          <!-- Menu screen -->
+          <div id="screen-menu" class="screen-content">
+            <div class="menu-content">
+              <h1 class="menu-title">SELECT GAME</h1>
+              <ul id="game-list" class="game-list"></ul>
+              <div class="menu-instructions">
+                <span>UP/DOWN: Select</span>
+                <span>ENTER: Start</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Game screen -->
+          <div id="screen-game" class="screen-content">
+            <iframe id="game-frame" class="game-frame"></iframe>
+            <div id="escape-progress" class="escape-progress hidden">
+              <div class="escape-bar"></div>
+              <span>Hold ESC to exit</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="control-panel">
+      <button id="btn-power" class="cabinet-btn power-btn" title="Power">
+        <span class="btn-icon">&#x23FB;</span>
+      </button>
+      <button id="btn-exit" class="cabinet-btn exit-btn" title="Exit to Menu">
+        <span class="btn-icon">&#x2190;</span>
+      </button>
+      <button id="btn-restart" class="cabinet-btn restart-btn" title="Restart Game">
+        <span class="btn-icon">&#x21BB;</span>
+      </button>
+      <button id="btn-mute" class="cabinet-btn mute-btn" title="Toggle Sound">
+        <span class="btn-icon">&#x1F50A;</span>
+      </button>
+    </div>
+
+    <div id="game-instructions" class="game-instructions hidden">
+      <span class="instructions-text"></span>
+      <button class="instructions-expand hidden" title="Show more">...</button>
+    </div>
+  </div>
+
+  <script type="module" src="scripts/main.js"></script>
+</body>
+</html>

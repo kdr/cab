@@ -1,0 +1,14 @@
+{
+  "cabinetName": "CAB",
+  "cabinetPort": 3000,
+  "gamesDirectory": "./games",
+  "portRange": {
+    "start": 3001,
+    "end": 3099
+  },
+  "escapeSequence": {
+    "key": "Escape",
+    "holdDuration": 1500,
+    "rapidPressCount": 3
+  }
+}
