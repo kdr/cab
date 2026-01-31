@@ -1,0 +1,9 @@
+{
+  "buildCommand": "pnpm run build",
+  "outputDirectory": "dist",
+  "framework": "vite",
+  "rewrites": [
+    { "source": "/api/games", "destination": "/api/games" },
+    { "source": "/api/config", "destination": "/api/config" }
+  ]
+}

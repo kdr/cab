@@ -10,6 +10,7 @@ export interface GameInfo {
   displayName?: string;
   description?: string;
   instructions?: string;
+  url?: string;
 }
 
 export interface RunningGame {
@@ -18,14 +19,92 @@ export interface RunningGame {
   process: ChildProcess;
 }
 
+export interface GameWithUrl extends GameInfo {
+  url: string;
+}
+
 export class GameManager {
   private gamesDirectory: string;
   private portManager: PortManager;
   private currentGame: RunningGame | null = null;
+  private runningGames: Map<string, RunningGame> = new Map();
+  private gamesWithUrls: GameWithUrl[] = [];
 
   constructor(gamesDirectory: string, portManager: PortManager) {
     this.gamesDirectory = resolve(process.cwd(), gamesDirectory);
     this.portManager = portManager;
+  }
+
+  async startAllGames(): Promise<GameWithUrl[]> {
+    const games = await this.listGames();
+    this.gamesWithUrls = [];
+
+    for (const game of games) {
+      try {
+        const port = await this.portManager.allocate();
+        const gamePath = game.path;
+
+        const gameProcess = spawn('pnpm', ['run', 'server', '--', `--port=${port}`], {
+          cwd: gamePath,
+          stdio: ['pipe', 'pipe', 'pipe'],
+          shell: true,
+        });
+
+        gameProcess.stdout?.on('data', (data) => {
+          console.log(`[${game.name}] ${data.toString().trim()}`);
+        });
+
+        gameProcess.stderr?.on('data', (data) => {
+          console.error(`[${game.name}] ${data.toString().trim()}`);
+        });
+
+        gameProcess.on('exit', (code) => {
+          console.log(`[${game.name}] Process exited with code ${code}`);
+          this.runningGames.delete(game.name);
+          this.portManager.release(port);
+        });
+
+        this.runningGames.set(game.name, { name: game.name, port, process: gameProcess });
+
+        // Wait for game server to be ready
+        await this.waitForServer(port);
+
+        this.gamesWithUrls.push({
+          ...game,
+          url: `http://localhost:${port}`,
+        });
+
+        console.log(`Started ${game.name} on port ${port}`);
+      } catch (error) {
+        console.error(`Failed to start ${game.name}:`, error);
+      }
+    }
+
+    return this.gamesWithUrls;
+  }
+
+  getGamesWithUrls(): GameWithUrl[] {
+    return this.gamesWithUrls;
+  }
+
+  async stopAllGames(): Promise<void> {
+    const stopPromises: Promise<void>[] = [];
+    for (const [name, game] of this.runningGames) {
+      stopPromises.push(
+        new Promise((resolve) => {
+          treeKill(game.process.pid!, 'SIGTERM', (err) => {
+            if (err) {
+              console.error(`Error killing ${name}:`, err);
+            }
+            this.portManager.release(game.port);
+            resolve();
+          });
+        })
+      );
+    }
+    await Promise.all(stopPromises);
+    this.runningGames.clear();
+    this.gamesWithUrls = [];
   }
 
   async listGames(): Promise<GameInfo[]> {
