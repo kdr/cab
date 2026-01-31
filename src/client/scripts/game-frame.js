@@ -1,22 +1,22 @@
 export class GameFrame {
   constructor(iframe) {
     this.iframe = iframe;
-    this.currentGamePort = null;
+    this.currentUrl = null;
   }
 
-  load(port) {
-    this.currentGamePort = port;
-    this.iframe.src = `http://localhost:${port}`;
+  load(url) {
+    this.currentUrl = url;
+    this.iframe.src = url;
   }
 
   unload() {
     this.iframe.src = 'about:blank';
-    this.currentGamePort = null;
+    this.currentUrl = null;
   }
 
   reload() {
-    if (this.currentGamePort) {
-      this.iframe.src = `http://localhost:${this.currentGamePort}`;
+    if (this.currentUrl) {
+      this.iframe.src = this.currentUrl;
     }
   }
 
@@ -30,7 +30,7 @@ export class GameFrame {
     }
   }
 
-  getPort() {
-    return this.currentGamePort;
+  getUrl() {
+    return this.currentUrl;
   }
 }

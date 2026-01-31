@@ -198,9 +198,10 @@ class Cabinet {
   async powerOff() {
     audioManager.playPowerOff();
 
-    // Stop any running game
+    // Unload any running game
     if (this.state === 'playing') {
-      await this.stopCurrentGame();
+      this.gameFrame.unload();
+      this.currentGame = null;
     }
 
     this.menu.detach();
@@ -217,61 +218,38 @@ class Cabinet {
     this.tvScreen.classList.remove('power-off');
   }
 
-  async startGame(game) {
+  startGame(game) {
     audioManager.playMenuSelect();
     this.menu.detach();
     this.currentGame = game;
 
-    try {
-      const response = await fetch(`/api/games/${game.name}/start`, {
-        method: 'POST',
-      });
-      const data = await response.json();
+    // Load game directly by URL
+    this.setScreen('playing');
+    this.gameFrame.load(game.url);
+    this.gameFrame.focus();
 
-      if (data.success) {
-        this.setScreen('playing');
-        this.gameFrame.load(data.port);
-        this.gameFrame.focus();
-
-        // Attach escape handler
-        const escapeProgress = document.getElementById('escape-progress');
-        if (this.escapeHandler) {
-          this.escapeHandler.attach(escapeProgress);
-        }
-      } else {
-        console.error('Failed to start game:', data.error);
-        this.menu.attach();
-      }
-    } catch (error) {
-      console.error('Failed to start game:', error);
-      this.menu.attach();
+    // Attach escape handler
+    const escapeProgress = document.getElementById('escape-progress');
+    if (this.escapeHandler) {
+      this.escapeHandler.attach(escapeProgress);
     }
   }
 
-  async stopCurrentGame() {
-    try {
-      await fetch('/api/games/stop', { method: 'POST' });
-    } catch (error) {
-      console.error('Failed to stop game:', error);
-    }
-    this.gameFrame.unload();
-    this.currentGame = null;
-  }
-
-  async exitToMenu() {
+  exitToMenu() {
     if (this.state !== 'playing') return;
 
     audioManager.playClick();
     if (this.escapeHandler) {
       this.escapeHandler.detach();
     }
-    await this.stopCurrentGame();
+    this.gameFrame.unload();
+    this.currentGame = null;
     this.setScreen('menu');
     this.menu.reset();
     this.menu.attach();
   }
 
-  async restartGame() {
+  restartGame() {
     if (this.state !== 'playing') return;
     audioManager.playClick();
     this.gameFrame.reload();

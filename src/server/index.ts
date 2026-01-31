@@ -61,21 +61,32 @@ function broadcast(message: object) {
 // Cleanup on exit
 process.on('SIGINT', async () => {
   console.log('\nShutting down cabinet...');
-  await gameManager.stopGame();
+  await gameManager.stopAllGames();
   process.exit(0);
 });
 
 process.on('SIGTERM', async () => {
-  await gameManager.stopGame();
+  await gameManager.stopAllGames();
   process.exit(0);
 });
 
-// Start server
-server.listen(config.cabinetPort, () => {
-  console.log(`
+// Start server and all games
+async function start() {
+  // Start all games first
+  console.log('Starting game servers...');
+  await gameManager.startAllGames();
+
+  server.listen(config.cabinetPort, () => {
+    console.log(`
 ╔════════════════════════════════════════╗
 ║   ${config.cabinetName} - Video Game Cabinet        ║
 ║   http://localhost:${config.cabinetPort}               ║
 ╚════════════════════════════════════════╝
-  `);
+    `);
+  });
+}
+
+start().catch((error) => {
+  console.error('Failed to start cabinet:', error);
+  process.exit(1);
 });
