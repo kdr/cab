@@ -3,6 +3,7 @@ import { Menu } from './menu.js';
 import { GameFrame } from './game-frame.js';
 import { EscapeHandler } from './escape-handler.js';
 import { audioManager } from './audio.js';
+import { VirtualKeyboard } from './virtual-keyboard.js';
 
 class Cabinet {
   constructor() {
@@ -27,6 +28,9 @@ class Cabinet {
     this.exitBtn = document.getElementById('btn-exit');
     this.restartBtn = document.getElementById('btn-restart');
     this.muteBtn = document.getElementById('btn-mute');
+    this.keyboardBtn = document.getElementById('btn-keyboard');
+
+    this.keyboardVisible = false;
 
     // Initialize components
     const gameList = document.getElementById('game-list');
@@ -39,12 +43,14 @@ class Cabinet {
     );
     this.gameFrame = new GameFrame(gameIframe);
     this.escapeHandler = null;
+    this.virtualKeyboard = new VirtualKeyboard(this.gameFrame);
 
     // Bind button events
     this.powerBtn.addEventListener('click', () => this.togglePower());
     this.exitBtn.addEventListener('click', () => this.exitToMenu());
     this.restartBtn.addEventListener('click', () => this.restartGame());
     this.muteBtn.addEventListener('click', () => this.toggleMute());
+    this.keyboardBtn.addEventListener('click', () => this.toggleKeyboard());
 
     // Instructions expand button
     this.instructionsExpand.addEventListener('click', () => {
@@ -92,6 +98,26 @@ class Cabinet {
     }
   }
 
+  toggleKeyboard() {
+    audioManager.init();
+    audioManager.playClick();
+    this.keyboardVisible = !this.keyboardVisible;
+    this.keyboardBtn.classList.toggle('active', this.keyboardVisible);
+    if (this.keyboardVisible) {
+      this.virtualKeyboard.show();
+    } else {
+      this.virtualKeyboard.hide();
+    }
+  }
+
+  hideKeyboard() {
+    if (this.keyboardVisible) {
+      this.keyboardVisible = false;
+      this.keyboardBtn.classList.remove('active');
+      this.virtualKeyboard.hide();
+    }
+  }
+
   onGameHighlight(game) {
     audioManager.playMenuMove();
     this.updateInstructions(game);
@@ -132,6 +158,7 @@ class Cabinet {
       case 'off':
         this.screenOff.classList.add('active');
         this.hideInstructions();
+        this.hideKeyboard();
         break;
       case 'boot':
         this.screenBoot.classList.add('active');

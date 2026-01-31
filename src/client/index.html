@@ -83,6 +83,41 @@
       <button id="btn-mute" class="cabinet-btn mute-btn" title="Toggle Sound">
         <span class="btn-icon">&#x1F50A;</span>
       </button>
+      <button id="btn-keyboard" class="cabinet-btn keyboard-btn" title="Virtual Keyboard">
+        <span class="btn-icon">&#x2328;</span>
+      </button>
+    </div>
+
+    <div id="virtual-keyboard" class="virtual-keyboard hidden">
+      <div class="vk-key-area">
+        <div class="vk-side vk-left">
+          <div class="vk-row">
+            <button class="vk-key" data-key="q">Q</button>
+            <button class="vk-key" data-key="w">W</button>
+            <button class="vk-key" data-key="e">E</button>
+          </div>
+          <div class="vk-row">
+            <button class="vk-key" data-key="a">A</button>
+            <button class="vk-key" data-key="s">S</button>
+            <button class="vk-key" data-key="d">D</button>
+          </div>
+        </div>
+        <div class="vk-side vk-right">
+          <div class="vk-row vk-row-center">
+            <button class="vk-key" data-key="ArrowUp">&#x25B2;</button>
+          </div>
+          <div class="vk-row">
+            <button class="vk-key" data-key="ArrowLeft">&#x25C0;</button>
+            <button class="vk-key" data-key="ArrowDown">&#x25BC;</button>
+            <button class="vk-key" data-key="ArrowRight">&#x25B6;</button>
+          </div>
+        </div>
+      </div>
+      <div class="vk-bottom-row">
+        <button class="vk-key vk-space" data-key=" ">SPACE</button>
+        <button class="vk-key vk-enter" data-key="Enter">ENTER</button>
+        <button class="vk-swap" title="Swap Layout">&#x21C4;</button>
+      </div>
     </div>
 
     <div id="game-instructions" class="game-instructions hidden">
