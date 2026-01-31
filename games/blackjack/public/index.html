@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blackjack</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="game-container">
+    <div class="hud">
+      <span class="chips">CHIPS: $<span id="chips">1000</span></span>
+      <span class="bet">BET: $<span id="bet">0</span></span>
+    </div>
+    <canvas id="game-canvas"></canvas>
+    <div id="message" class="message">PRESS SPACE TO DEAL</div>
+    <div class="controls">
+      <span>SPACE: Deal</span>
+      <span>W: Hit</span>
+      <span>S: Stand</span>
+      <span>E: Double</span>
+    </div>
+  </div>
+  <script>
+    // Virtual keyboard support - listen for key events from parent frame
+    window.addEventListener('message', function(e) {
+      if (e.data && e.data.type === 'vk-key') {
+        var event = new KeyboardEvent(e.data.eventType, {
+          key: e.data.key,
+          code: e.data.code,
+          keyCode: e.data.keyCode,
+          which: e.data.keyCode,
+          bubbles: true,
+          cancelable: true
+        });
+        document.dispatchEvent(event);
+      }
+    });
+  </script>
+  <script src="game.js"></script>
+</body>
+</html>

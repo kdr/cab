@@ -1,0 +1,22 @@
+{
+  "name": "frogger",
+  "version": "1.0.0",
+  "description": "Classic Frogger game",
+  "type": "module",
+  "cabinet": {
+    "displayName": "Frogger",
+    "instructions": "Move: WASD or Arrows | Reach the lily pads!"
+  },
+  "scripts": {
+    "server": "tsx server.ts"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.11.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3"
+  }
+}
