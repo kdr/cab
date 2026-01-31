@@ -1,0 +1,81 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  background: #000;
+  font-family: 'Courier New', monospace;
+  color: #fff;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+
+.game-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  height: 100%;
+  max-width: 450px;
+  max-height: 600px;
+}
+
+.scoreboard {
+  font-size: clamp(14px, 4vw, 20px);
+  font-weight: bold;
+  display: flex;
+  gap: 30px;
+  flex-shrink: 0;
+}
+
+#game-canvas {
+  border: 2px solid #fff;
+  background: #87CEEB;
+  width: 100%;
+  height: auto;
+  flex: 1;
+  min-height: 0;
+  object-fit: contain;
+}
+
+.message {
+  font-size: clamp(14px, 4vw, 18px);
+  animation: blink 1s infinite;
+  flex-shrink: 0;
+}
+
+.message.hidden {
+  display: none;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.controls {
+  font-size: clamp(10px, 2.5vw, 12px);
+  opacity: 0.7;
+  flex-shrink: 0;
+}
+
+/* Mobile landscape optimization */
+@media (max-height: 500px) {
+  .game-container {
+    gap: 5px;
+  }
+
+  .controls {
+    display: none;
+  }
+}

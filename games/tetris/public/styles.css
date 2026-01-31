@@ -1,0 +1,117 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  background: #000;
+  font-family: 'Courier New', monospace;
+  color: #fff;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+
+.game-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  height: 100%;
+  max-width: 500px;
+  max-height: 600px;
+}
+
+.game-area {
+  display: flex;
+  gap: 15px;
+  flex: 1;
+  min-height: 0;
+}
+
+#game-canvas {
+  border: 2px solid #fff;
+  background: #111;
+  height: 100%;
+  width: auto;
+  object-fit: contain;
+}
+
+.side-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  min-width: 80px;
+}
+
+.panel-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.panel-label {
+  font-size: clamp(10px, 2vw, 12px);
+  opacity: 0.7;
+}
+
+.panel-value {
+  font-size: clamp(16px, 4vw, 24px);
+  font-weight: bold;
+}
+
+#next-canvas {
+  border: 2px solid #fff;
+  background: #111;
+  width: 80px;
+  height: 80px;
+}
+
+.message {
+  font-size: clamp(14px, 4vw, 18px);
+  animation: blink 1s infinite;
+  flex-shrink: 0;
+}
+
+.message.hidden {
+  display: none;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.controls {
+  display: flex;
+  gap: clamp(10px, 3vw, 20px);
+  font-size: clamp(9px, 2vw, 11px);
+  opacity: 0.7;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Mobile landscape optimization */
+@media (max-height: 500px) {
+  .game-container {
+    gap: 5px;
+  }
+
+  .controls {
+    display: none;
+  }
+
+  .side-panel {
+    gap: 8px;
+  }
+}

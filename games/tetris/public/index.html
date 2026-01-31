@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tetris</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="game-container">
+    <div class="game-area">
+      <canvas id="game-canvas"></canvas>
+      <div class="side-panel">
+        <div class="panel-section">
+          <div class="panel-label">NEXT</div>
+          <canvas id="next-canvas"></canvas>
+        </div>
+        <div class="panel-section">
+          <div class="panel-label">SCORE</div>
+          <div id="score" class="panel-value">0</div>
+        </div>
+        <div class="panel-section">
+          <div class="panel-label">LEVEL</div>
+          <div id="level" class="panel-value">1</div>
+        </div>
+        <div class="panel-section">
+          <div class="panel-label">LINES</div>
+          <div id="lines" class="panel-value">0</div>
+        </div>
+      </div>
+    </div>
+    <div id="message" class="message">PRESS SPACE TO START</div>
+    <div class="controls">
+      <span>MOVE: A/D or LEFT/RIGHT</span>
+      <span>ROTATE: W or UP</span>
+      <span>DROP: SPACE</span>
+    </div>
+  </div>
+  <script>
+    // Virtual keyboard support - listen for key events from parent frame
+    window.addEventListener('message', function(e) {
+      if (e.data && e.data.type === 'vk-key') {
+        var event = new KeyboardEvent(e.data.eventType, {
+          key: e.data.key,
+          code: e.data.code,
+          keyCode: e.data.keyCode,
+          which: e.data.keyCode,
+          bubbles: true,
+          cancelable: true
+        });
+        document.dispatchEvent(event);
+      }
+    });
+  </script>
+  <script src="game.js"></script>
+</body>
+</html>
