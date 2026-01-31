@@ -15,6 +15,22 @@
     <canvas id="game-canvas"></canvas>
     <div id="message" class="message">PRESS SPACE TO START</div>
   </div>
+  <script>
+    // Virtual keyboard support - listen for key events from parent frame
+    window.addEventListener('message', function(e) {
+      if (e.data && e.data.type === 'vk-key') {
+        var event = new KeyboardEvent(e.data.eventType, {
+          key: e.data.key,
+          code: e.data.code,
+          keyCode: e.data.keyCode,
+          which: e.data.keyCode,
+          bubbles: true,
+          cancelable: true
+        });
+        document.dispatchEvent(event);
+      }
+    });
+  </script>
   <script src="game.js"></script>
 </body>
 </html>
