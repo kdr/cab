@@ -1,0 +1,349 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --cabinet-bg: #1a1a2e;
+  --bezel-color: #2d2d44;
+  --screen-bg: #0a0a0a;
+  --text-primary: #00ff00;
+  --text-secondary: #00cc00;
+  --text-dim: #006600;
+  --btn-power: #ff4444;
+  --btn-exit: #ff8844;
+  --btn-restart: #44ff44;
+  --glow-green: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Courier New', monospace;
+  background: #0a0a12;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background:
+    radial-gradient(ellipse at center, #1a1a2e 0%, #0a0a12 100%);
+}
+
+.cabinet {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+}
+
+.screen-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.screen-content.active {
+  display: flex;
+}
+
+/* Static noise for off screen */
+.static-noise {
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.1),
+    rgba(0, 0, 0, 0.1) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  animation: noise 0.2s steps(10) infinite;
+}
+
+@keyframes noise {
+  0% { transform: translate(0, 0); }
+  10% { transform: translate(-1%, -1%); }
+  20% { transform: translate(1%, 1%); }
+  30% { transform: translate(-1%, 1%); }
+  40% { transform: translate(1%, -1%); }
+  50% { transform: translate(-1%, 0); }
+  60% { transform: translate(1%, 0); }
+  70% { transform: translate(0, 1%); }
+  80% { transform: translate(0, -1%); }
+  90% { transform: translate(1%, 1%); }
+  100% { transform: translate(0, 0); }
+}
+
+/* Boot screen */
+.boot-content {
+  text-align: center;
+  color: var(--text-primary);
+}
+
+#ascii-art {
+  font-size: 8px;
+  line-height: 1;
+  letter-spacing: 0;
+  margin-bottom: 30px;
+  text-shadow: var(--glow-green);
+}
+
+.boot-message {
+  font-size: 14px;
+  animation: blink 1s infinite;
+}
+
+.press-start {
+  font-size: 18px;
+  margin-top: 20px;
+  animation: blink 0.5s infinite;
+}
+
+.press-start.hidden {
+  display: none;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+/* Menu screen */
+.menu-content {
+  width: 80%;
+  max-width: 400px;
+  color: var(--text-primary);
+}
+
+.menu-title {
+  font-size: 24px;
+  text-align: center;
+  margin-bottom: 30px;
+  text-shadow: var(--glow-green);
+}
+
+.game-list {
+  list-style: none;
+  margin-bottom: 30px;
+}
+
+.game-list li {
+  padding: 12px 20px;
+  margin: 8px 0;
+  background: rgba(0, 255, 0, 0.05);
+  border: 1px solid var(--text-dim);
+  cursor: pointer;
+  transition: all 0.1s;
+  text-transform: uppercase;
+}
+
+.game-list li:hover,
+.game-list li.selected {
+  background: rgba(0, 255, 0, 0.2);
+  border-color: var(--text-primary);
+  text-shadow: var(--glow-green);
+}
+
+.menu-instructions {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+/* Game frame */
+#screen-game {
+  padding: 15px;
+}
+
+.game-frame {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: #000;
+  border-radius: 3px;
+}
+
+/* Escape progress */
+.escape-progress {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  padding: 10px 20px;
+  border: 1px solid var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  z-index: 100;
+}
+
+.escape-progress.hidden {
+  display: none;
+}
+
+.escape-bar {
+  width: 150px;
+  height: 8px;
+  background: var(--text-dim);
+  position: relative;
+  overflow: hidden;
+}
+
+.escape-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: var(--progress, 0%);
+  background: var(--text-primary);
+  box-shadow: var(--glow-green);
+  transition: width 0.05s linear;
+}
+
+.escape-progress span {
+  font-size: 12px;
+  color: var(--text-primary);
+}
+
+/* Control panel */
+.control-panel {
+  display: flex;
+  gap: 20px;
+  padding: 15px 30px;
+  background: linear-gradient(180deg, #3d3d5c 0%, #2d2d44 100%);
+  border-radius: 10px;
+  box-shadow:
+    0 4px 8px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.cabinet-btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  transition: all 0.1s;
+  box-shadow:
+    0 4px 0 rgba(0, 0, 0, 0.3),
+    0 6px 10px rgba(0, 0, 0, 0.3);
+}
+
+.cabinet-btn:active {
+  transform: translateY(2px);
+  box-shadow:
+    0 2px 0 rgba(0, 0, 0, 0.3),
+    0 3px 5px rgba(0, 0, 0, 0.3);
+}
+
+.power-btn {
+  background: linear-gradient(180deg, #ff6666 0%, var(--btn-power) 100%);
+  color: #fff;
+}
+
+.power-btn.on {
+  box-shadow:
+    0 4px 0 rgba(0, 0, 0, 0.3),
+    0 6px 10px rgba(0, 0, 0, 0.3),
+    0 0 20px var(--btn-power);
+}
+
+.exit-btn {
+  background: linear-gradient(180deg, #ffaa66 0%, var(--btn-exit) 100%);
+  color: #fff;
+}
+
+.restart-btn {
+  background: linear-gradient(180deg, #66ff66 0%, var(--btn-restart) 100%);
+  color: #fff;
+}
+
+.mute-btn {
+  background: linear-gradient(180deg, #7799ff 0%, #5577dd 100%);
+  color: #fff;
+}
+
+.mute-btn.muted {
+  background: linear-gradient(180deg, #666 0%, #444 100%);
+  opacity: 0.7;
+}
+
+.btn-icon {
+  display: block;
+  line-height: 1;
+}
+
+/* Game instructions panel - fixed height */
+.game-instructions {
+  width: 600px;
+  height: 50px;
+  padding: 12px 20px;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 8px;
+  color: #aaa;
+  font-size: 13px;
+  text-align: center;
+  line-height: 1.4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  overflow: hidden;
+}
+
+.game-instructions.hidden {
+  visibility: hidden;
+}
+
+.game-instructions.expanded {
+  height: auto;
+  min-height: 50px;
+}
+
+.instructions-text {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.game-instructions.expanded .instructions-text {
+  white-space: normal;
+  overflow: visible;
+}
+
+.instructions-expand {
+  background: none;
+  border: 1px solid #666;
+  color: #888;
+  padding: 2px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+.instructions-expand:hover {
+  border-color: #999;
+  color: #aaa;
+}
+
+.instructions-expand.hidden {
+  display: none;
+}
