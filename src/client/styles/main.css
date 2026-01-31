@@ -130,6 +130,11 @@ body {
   width: 80%;
   max-width: 400px;
   color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-height: 100%;
+  overflow: hidden;
 }
 
 .menu-title {
@@ -137,11 +142,30 @@ body {
   text-align: center;
   margin-bottom: 30px;
   text-shadow: var(--glow-green);
+  flex-shrink: 0;
 }
 
 .game-list {
   list-style: none;
-  margin-bottom: 30px;
+  margin-bottom: 15px;
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--text-dim) rgba(0, 100, 0, 0.1);
+}
+
+.game-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.game-list::-webkit-scrollbar-track {
+  background: rgba(0, 100, 0, 0.1);
+}
+
+.game-list::-webkit-scrollbar-thumb {
+  background: var(--text-dim);
+  box-shadow: 0 0 5px var(--text-dim);
 }
 
 .game-list li {
@@ -167,6 +191,8 @@ body {
   gap: 30px;
   font-size: 12px;
   color: var(--text-dim);
+  flex-shrink: 0;
+  padding-top: 10px;
 }
 
 /* Game frame */
@@ -486,4 +512,23 @@ body {
   box-shadow:
     0 1px 0 rgba(0, 0, 0, 0.4),
     0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Mobile menu adjustments */
+@media (max-width: 900px) {
+  .menu-title {
+    font-size: 18px;
+    margin-bottom: 15px;
+  }
+
+  .game-list li {
+    padding: 10px 15px;
+    margin: 6px 0;
+    font-size: 14px;
+  }
+
+  .menu-instructions {
+    gap: 15px;
+    font-size: 11px;
+  }
 }

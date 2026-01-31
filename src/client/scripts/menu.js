@@ -65,6 +65,13 @@ export class Menu {
     });
   }
 
+  scrollToSelected() {
+    const selectedItem = this.listElement.querySelector('li.selected');
+    if (selectedItem) {
+      selectedItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }
+
   notifyHighlight() {
     if (this.games.length > 0 && this.games[this.selectedIndex]) {
       this.onHighlight(this.games[this.selectedIndex]);
@@ -90,6 +97,7 @@ export class Menu {
         this.selectedIndex = Math.max(0, this.selectedIndex - 1);
         this.updateSelection();
         this.notifyHighlight();
+        this.scrollToSelected();
         break;
 
       case 'ArrowDown':
@@ -99,6 +107,7 @@ export class Menu {
         this.selectedIndex = Math.min(this.games.length - 1, this.selectedIndex + 1);
         this.updateSelection();
         this.notifyHighlight();
+        this.scrollToSelected();
         break;
 
       case 'Enter':
@@ -119,5 +128,6 @@ export class Menu {
     this.selectedIndex = 0;
     this.updateSelection();
     this.notifyHighlight();
+    this.listElement.scrollTop = 0;
   }
 }
