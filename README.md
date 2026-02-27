@@ -36,6 +36,7 @@ pnpm install
 # Install game dependencies
 cd games/pong && pnpm install && cd ../..
 cd games/breakout && pnpm install && cd ../..
+cd games/worm && pnpm install && cd ../..
 ```
 
 ### Run the Cabinet
@@ -56,6 +57,8 @@ Open http://localhost:3000 and click the power button to start.
 pnpm run game pong
 # or
 pnpm run game breakout
+# or
+pnpm run game worm
 ```
 
 Runs the game directly at http://localhost:3000.
@@ -83,6 +86,12 @@ vercel
 **Deploy Breakout:**
 ```bash
 cd games/breakout
+vercel
+```
+
+**Deploy Worm:**
+```bash
+cd games/worm
 vercel
 ```
 
@@ -118,6 +127,12 @@ In Vercel dashboard, set the following environment variables for the cabinet pro
     "displayName": "Breakout",
     "url": "https://your-breakout-deployment.vercel.app",
     "instructions": "Move paddle: Arrow Left/Right or A/D | Press SPACE to launch ball"
+  },
+  {
+    "name": "worm",
+    "displayName": "Worm",
+    "url": "https://your-worm-deployment.vercel.app",
+    "instructions": "Move: WASD or Arrow keys | Press SPACE to start/restart"
   }
 ]
 ```
